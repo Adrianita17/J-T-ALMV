@@ -1,24 +1,24 @@
 let nickname = "";
 let nivel = 1;
 
+const fondoInicial = "#1E3A8A";
 
-const fondos = [
-    "#1E3A8A",
-    "#065F46",
-    "#7C2D12",
-    "#78350F",
-    "#3B0764",
-    "#9D174D"
+const fondosCiclo = [
+    "#87CEFA",
+    "#0A1A2F"
 ];
 
 let indiceFondo = 0;
 
-
 function cambiarFondo() {
-    indiceFondo = (indiceFondo + 1) % fondos.length;
-    document.getElementById("juego-contenedor").style.backgroundColor = fondos[indiceFondo];
-}
+    if (nivel === 1) {
+        document.getElementById("juego-contenedor").style.backgroundColor = fondoInicial;
+        return;
+    }
 
+    indiceFondo = (indiceFondo + 1) % fondosCiclo.length;
+    document.getElementById("juego-contenedor").style.backgroundColor = fondosCiclo[indiceFondo];
+}
 
 let velocidadObstaculo = 10;
 
@@ -41,6 +41,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const puntuacionDisplay = document.getElementById("puntuacion");
     const suelo = document.getElementById("suelo");
 
+    juegoContenedor.style.backgroundColor = fondoInicial;
+
     let isJumping = false;
     let botBottom = 30;
     let score = 0;
@@ -49,6 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let gameLoopInterval;
 
     const gameWidth = 900;
+
     function jump() {
         if (isJumping) return;
         isJumping = true;
@@ -94,8 +97,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 puntuacionDisplay.textContent = 'Puntuación: ' + score;
 
                 if (score % 5 === 0) {
-                    cambiarFondo();
                     subirNivel();
+                    cambiarFondo();
                 }
             }
 
@@ -141,6 +144,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         mensajeJuego.style.display = 'none';
         suelo.style.animationPlayState = 'running';
+
+        // 🔥 Fondo vuelve al azul oscuro al reiniciar
+        indiceFondo = 0;
+        juegoContenedor.style.backgroundColor = fondoInicial;
 
         obstacleInterval = setInterval(generarObstaculo, 1800);
     }
